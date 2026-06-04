@@ -104,3 +104,25 @@ Below are instructions for using common examples:
     ```
 
 ---
+
+## Fork Modifications (this repo vs upstream)
+
+This fork aligns the SDK's DDS type names with the ROS 2 `inspire_hand_msgs` package so that SDK nodes and ROS 2 nodes can communicate on the same DDS domain without bridging.
+
+### 1. DDS typename alignment
+
+| Message | Upstream typename | This fork typename |
+|---------|------------------|--------------------|
+| `inspire_hand_ctrl` | `"inspire.inspire_hand_ctrl"` | `"inspire_hand_msgs::msg::dds_::InspireHandCtrl_"` |
+| `inspire_hand_state` | `"inspire.inspire_hand_state"` | `"inspire_hand_msgs::msg::dds_::InspireHandState_"` |
+| `inspire_hand_touch` | `"inspire.inspire_hand_touch"` | `"inspire_hand_msgs::msg::dds_::InspireHandTouch_"` |
+
+**Why**: The upstream SDK uses its own DDS type names (`inspire.xxx`). ROS 2's `inspire_hand_msgs` package generates different DDS type names (`inspire_hand_msgs::msg::dds_::Xxx_`). When both sides use `rmw_cyclonedds`, messages with mismatched type names are silently dropped. After alignment, SDK nodes (unitree_sdk2py based) and ROS 2 nodes can pub/sub each other's topics directly.
+
+**Files changed**: `inspire_sdkpy/inspire_dds/_inspire_hand_ctrl.py`, `_inspire_hand_state.py`, `_inspire_hand_touch.py`
+
+### 2. Lazy-load Qt dependencies
+
+`inspire_sdkpy/__init__.py` now uses `importlib` + `__getattr__` to lazily import `qt_tabs` (which depends on PyQt5). This prevents import errors in headless environments (NX board, servers, CI) where Qt is not installed.
+
+**File changed**: `inspire_sdkpy/__init__.py`

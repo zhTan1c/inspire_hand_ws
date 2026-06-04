@@ -21,7 +21,11 @@ import cyclonedds.idl.types as types
 @dataclass
 @annotate.final
 @annotate.autoid("sequential")
-class inspire_hand_state(idl.IdlStruct, typename="inspire.inspire_hand_state"):
+class inspire_hand_state(
+    idl.IdlStruct, 
+    # typename="inspire.inspire_hand_state"
+    typename="inspire_hand_msgs::msg::dds_::InspireHandState_",
+    ):
     pos_act: types.sequence[types.int16, 6]
     angle_act: types.sequence[types.int16, 6]
     force_act: types.sequence[types.int16, 6]

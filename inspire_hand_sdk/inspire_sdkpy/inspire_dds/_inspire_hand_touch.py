@@ -21,7 +21,11 @@ import cyclonedds.idl.types as types
 @dataclass
 @annotate.final
 @annotate.autoid("sequential")
-class inspire_hand_touch(idl.IdlStruct, typename="inspire.inspire_hand_touch"):
+class inspire_hand_touch(
+    idl.IdlStruct, 
+    # typename="inspire.inspire_hand_touch"
+    typename="inspire_hand_msgs::msg::dds_::InspireHandTouch_",
+    ):
     fingerone_tip_touch: types.sequence[types.int16, 9]
     fingerone_top_touch: types.sequence[types.int16, 96]
     fingerone_palm_touch: types.sequence[types.int16, 80]

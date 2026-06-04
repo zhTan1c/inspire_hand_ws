@@ -18,10 +18,16 @@ import cyclonedds.idl.types as types
 # import inspire_dds
 
 
+# typename 已改为与 ROS2 inspire_hand_msgs/InspireHandCtrl 的 DDS 类型名一致，
+# 以便 SDK 订阅端能与 rmw_cyclonedds 发布的消息匹配（勿用 idlc 覆盖此文件）。
 @dataclass
 @annotate.final
 @annotate.autoid("sequential")
-class inspire_hand_ctrl(idl.IdlStruct, typename="inspire.inspire_hand_ctrl"):
+class inspire_hand_ctrl(
+    idl.IdlStruct,
+    # typename="inspire.inspire_hand_ctrl"
+    typename="inspire_hand_msgs::msg::dds_::InspireHandCtrl_",
+):
     pos_set: types.sequence[types.int16, 6]
     angle_set: types.sequence[types.int16, 6]
     force_set: types.sequence[types.int16, 6]
